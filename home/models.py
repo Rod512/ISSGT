@@ -4,7 +4,7 @@ from django.urls import reverse
 
 class HomeBlog(models.Model):
     title = models.CharField(max_length=80)
-    slug = models.SlugField(max_length=80, unique=True)
+    slug = models.SlugField(max_length=80)
     published_date = models.DateTimeField(default=timezone.now)
     image = models.ImageField(upload_to='photos/blog')
 
