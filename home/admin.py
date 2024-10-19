@@ -3,7 +3,7 @@ from .models import HomeBlog
 
 
 class HomeAdmin(admin.ModelAdmin):
-    list_display = ('title', 'slug', 'published_date')
+    list_display = ('category', 'slug', 'published_date')
 
 admin.site.register(HomeBlog, HomeAdmin)
 
