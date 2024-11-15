@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block content %}
+<main class="main">
+    <!-- Page Title -->
+    <div class="page-title position-relative">
+      <div class="container d-lg-flex justify-content-between align-items-center">
+        <h1 class="mb-2 mb-lg-0">{{ blog.category }}</h1>
+        <nav class="breadcrumbs">
+          <ol>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'blogs' %}">Blogs</a></li>
+            <li class="current">{{ blog.category }}</li>
+          </ol>
+        </nav>
+      </div>
+    </div><!-- End Page Title -->
+
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8">
+          <!-- Blog Post Section -->
+          <section id="single-blog-post" class="single-blog-post section">
+            <article class="post">
+              <div class="post-img position-relative overflow-hidden">
+                <img src="{{ blog.image.url }}" class="img-fluid" alt="{{ blog.category }}">
+              </div>
+
+              <div class="post-content">
+                <h3 class="post-title">{{ blog.category }}</h3>
+                <div class="meta d-flex align-items-center">
+                  <div class="d-flex align-items-center">
+                    <i class="bi bi-person"></i> <span class="ps-2">{{ blog.author.username }}</span>
+                  </div>
+                  <span class="px-3 text-black-50">/</span>
+                  <div class="d-flex align-items-center">
+                    <i class="bi bi-folder2"></i> <span class="ps-2">{{ blog.slug }}</span>
+                  </div>
+                  <span class="px-3 text-black-50">/</span>
+                  <div class="d-flex align-items-center">
+                    <i class="bi bi-calendar"></i> <span class="ps-2">{{ blog.published_date|date:"F d, Y" }}</span>
+                  </div>
+                </div>
+                <p>{{ blog.content }}</p>
+              </div>
+            </article>
+          </section><!-- End Blog Post Section -->
+        </div>
+
+        <!-- Sidebar or Additional Widgets -->
+        <div class="col-lg-4 sidebar">
+          <div class="widgets-container">
+            <!-- Recent Posts Widget -->
+            <div class="recent-posts-widget widget-item">
+              <h3 class="widget-title">Recent Posts</h3>
+              {% for recent_blog in page_obj.object_list|slice:":5" %}
+                <div class="post-item">
+                  <img src="{{ recent_blog.image.url }}" alt="" class="flex-shrink-0">
+                  <div>
+                    <h4><a href="#">{{ recent_blog.category }}</a></h4>
+                    <time datetime="{{ recent_blog.published_date }}">{{ recent_blog.published_date|date:"Y-m-d" }}</time>
+                  </div>
+                </div>
+              {% endfor %}
+            </div><!--/Recent Posts Widget -->
+          </div>
+        </div>
+      </div>
+    </div>
+</main>
+{% endblock content %}
