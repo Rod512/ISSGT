@@ -1,7 +1,9 @@
 from django.core.paginator import Paginator
 from django.shortcuts import render
 from home.models import HomeBlog
-from django.shortcuts import render, get_object_or_404
+from .models import Comment
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
 
 
 def blog_list(request):
@@ -18,5 +20,27 @@ def blog_list(request):
     return render(request, 'blogs/blogs.html', context)
 
 def single_blog(request, slug):
-    blog = get_object_or_404(HomeBlog, slug=slug)  # Get the specific blog post by its slug
-    return render(request, 'blogs/single_blog.html', {'blog': blog})
+    blog = get_object_or_404(HomeBlog, slug=slug)
+    comment = Comment.objects.filter(blog=blog).order_by('-created_at')
+    
+    context ={
+        'blog': blog,
+        'comment' : comment
+    }  
+    return render(request, 'blogs/single_blog.html', context)
+
+@login_required
+def add_comment(request, slug):
+    blog = get_object_or_404(HomeBlog, slug=slug)
+
+    if request.method == 'POST':
+        content = request.POST.get('content')
+        if content:
+            comment = Comment.objects.create(
+                blog=blog,
+                user=request.user,
+                comment=content,
+            )
+            comment.save()
+            return redirect('single_blog', slug=blog.slug)
+    return redirect('single_blog', slug=blog.slug)
