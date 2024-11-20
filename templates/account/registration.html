@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+
+<section class="h-100 custom-gradient-form" style="background-color: #eee;">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-xl-10">
+        <div class="card custom-card text-black">
+          <div class="row g-0">
+            <!-- Left Section -->
+            <div class="col-lg-6">
+              <div class="custom-card-body p-md-5 mx-md-4">
+                <div class="text-center">
+                  <img src="{% static 'img/logo.png' %}" style="width: 80px;" alt="logo">
+                  <h4 class="mt-1 mb-5 pb-1">We are The Lotus Team</h4>
+                </div>
+  
+                <form>
+                  <p>Please create a new account</p>
+  
+                  <!-- Username Input -->
+                  <div class="form-floating custom-form-group mb-4">
+                    <input type="text" id="formUsername" class="form-control" placeholder="Enter username" required>
+                    <label for="formUsername">Username</label>
+                  </div>
+  
+                  <!-- Email Input -->
+                  <div class="form-floating custom-form-group mb-4">
+                    <input type="email" id="formEmail" class="form-control" placeholder="Enter your email" required>
+                    <label for="formEmail">Email address</label>
+                  </div>
+  
+                  <!-- Password Input -->
+                  <div class="form-floating custom-form-group mb-4">
+                    <input type="password" id="formPassword" class="form-control" placeholder="Enter your password" required>
+                    <label for="formPassword">Password</label>
+                  </div>
+  
+                  <!-- Confirm Password Input -->
+                  <div class="form-floating custom-form-group mb-4">
+                    <input type="password" id="formConfirmPassword" class="form-control" placeholder="Confirm your password" required>
+                    <label for="formConfirmPassword">Confirm Password</label>
+                  </div>
+  
+                  <!-- Register Button -->
+                  <div class="text-center custom-button-container pt-1 mb-5 pb-1">
+                    <button class="btn btn-primary w-100 custom-gradient-btn mb-3" type="submit">
+                      Register
+                    </button>
+                  </div>
+  
+                  <!-- Login Link -->
+                  <div class="d-flex align-items-center justify-content-center custom-login-link pb-4">
+                    <p class="mb-0 me-2">Already have an account?</p>
+                    <a href="login.html" class="btn btn-outline-danger custom-login-btn">Login here</a>
+                  </div>
+                </form>
+              </div>
+            </div>
+  
+            <!-- Right Section -->
+            <div class="col-lg-6 d-flex align-items-center custom-gradient-right">
+              <div class="text-white px-3 py-4 p-md-5 mx-md-4">
+                <h4 class="mb-4">Join us now and grow your skills</h4>
+                <p class="small mb-0">Become a part of our growing community. Access exclusive content, get support, 
+                  and connect with like-minded individuals.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block content %}
+{% include "partials/_navbar.html" %}
   <main class="main">
 
     <!-- Slider Section -->
@@ -275,4 +276,6 @@
 
   <!-- Preloader -->
   <div id="preloader"></div>
+  {% include "partials/_footer.html" %}
+
 {% endblock content%}
