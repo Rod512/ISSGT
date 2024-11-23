@@ -13,48 +13,42 @@
               <div class="custom-card-body p-md-5 mx-md-4">
                 <div class="text-center">
                   <img src="{% static 'img/logo.png' %}" style="width: 80px;" alt="logo">
-                  <h4 class="mt-1 mb-5 pb-1">We are The Lotus Team</h4>
+                  <h4 class="mt-1 mb-5 pb-1">শৈব ধর্ম জয়তে</h4>
                 </div>
   
-                <form>
-                  <p>Please create a new account</p>
-  
-                  <!-- Username Input -->
-                  <div class="form-floating custom-form-group mb-4">
-                    <input type="text" id="formUsername" class="form-control" placeholder="Enter username" required>
-                    <label for="formUsername">Username</label>
+                <form method='POST'>
+                  {% csrf_token %}
+                  <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">First_Name</label>
+                    {{form.first_name}}
                   </div>
-  
-                  <!-- Email Input -->
-                  <div class="form-floating custom-form-group mb-4">
-                    <input type="email" id="formEmail" class="form-control" placeholder="Enter your email" required>
-                    <label for="formEmail">Email address</label>
+                  <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Last_Name</label>
+                    {{form.last_name}}
                   </div>
-  
-                  <!-- Password Input -->
-                  <div class="form-floating custom-form-group mb-4">
-                    <input type="password" id="formPassword" class="form-control" placeholder="Enter your password" required>
-                    <label for="formPassword">Password</label>
+
+                  <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Email</label>
+                    {{form.email}}
                   </div>
-  
-                  <!-- Confirm Password Input -->
-                  <div class="form-floating custom-form-group mb-4">
-                    <input type="password" id="formConfirmPassword" class="form-control" placeholder="Confirm your password" required>
-                    <label for="formConfirmPassword">Confirm Password</label>
+
+                  <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Phone Number</label>
+                    {{form.phone_number}}
                   </div>
-  
-                  <!-- Register Button -->
-                  <div class="text-center custom-button-container pt-1 mb-5 pb-1">
-                    <button class="btn btn-primary w-100 custom-gradient-btn mb-3" type="submit">
-                      Register
-                    </button>
+
+                  <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Password</label>
+                    {{form.password}}
                   </div>
-  
-                  <!-- Login Link -->
-                  <div class="d-flex align-items-center justify-content-center custom-login-link pb-4">
-                    <p class="mb-0 me-2">Already have an account?</p>
-                    <a href="login.html" class="btn btn-outline-danger custom-login-btn">Login here</a>
+
+                  <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Confirm_password</label>
+                    {{form.confirm_password}}
                   </div>
+                  
+                  <button type="submit" class="btn btn-primary w-100 gradient-custom-2 mb-3">Submit</button> 
+                  <p>Already have an account? <a href="{% url "login" %}">login</a> or <a href="{% url "home" %}">Home</a> </p>
                 </form>
               </div>
             </div>
