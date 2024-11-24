@@ -17,14 +17,15 @@
                     <h4 class="mt-1 mb-5 pb-1">শৈব ধর্ম জয়তে </h4>
                   </div>
   
-                  <form>
+                  <form method="POST">
+                    {% csrf_token %}
                     <p>Please login to your account</p>
   
-                    <!-- Username Input -->
+                    <!-- Email Input -->
                     <div class="form-floating mb-4">
                       <input type="email" id="form2Example11" class="form-control" 
                         placeholder="Phone number or email address">
-                      <label for="form2Example11">Username</label>
+                      <label for="form2Example11">Email</label>
                     </div>
   
                     <!-- Password Input -->
