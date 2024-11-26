@@ -2,8 +2,7 @@ from django.shortcuts import render, redirect
 from .forms import RegistrationForm
 from django.contrib import messages
 from .models import Account
-from django.contrib.auth import authenticate, login
-from urllib.parse import urlparse, parse_qs
+from django.contrib.auth import authenticate, login, logout
 
 
 def registration(request):
@@ -34,32 +33,21 @@ def registration(request):
 
 
 
-
 def user_login(request):
-    if request.method == "POST":
-        email = request.POST.get("email")
-        password = request.POST.get("password")
+    if request.method == 'POST':
+        email = request.POST['email']
+        password = request.POST['password']
 
-        # Authenticate using the default authentication system
-        user = authenticate(request, email=email, password=password)
+        user = authenticate(email=email, password=password)
 
         if user is not None:
-            # Log the user in if authentication is successful
-            login(request, user)
-            messages.info(request, "You have successfully logged in.")
-            url = request.META.get("HTTP_REFERER")
-            try:
-                query = urlparse(url).query
-                params = dict(x.split("=") for x in query.split("&"))
-                if "next" in params:
-                    nextPage = params["next"]
-                    return redirect(nextPage)
-            except Exception:
-                return redirect("dashboard")  # Replace with your dashboard or homepage URL
+            login(request,user)
+            return redirect('home')
         else:
-            messages.warning(request, "Invalid login credentials")
-            return redirect("login")
-    else:
-        return render(request, "account/login.html")
+            messages.error(request, 'Invalid email or password')
+            return redirect('login')
+    return render(request, 'account/login.html')
 
-
+def user_logout(request):
+    logout(request)
+    return redirect('home')

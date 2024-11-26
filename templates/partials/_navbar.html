@@ -20,8 +20,14 @@
     </nav>
 
     <div class="auth">
+      {% if user.is_authenticated %}
+      <span class="d-block">Welcome {{user.first_name}}</span>
+      <a href="{% url "logout" %}" class="btn btn-success">Log Out</a>
+      <a href="{% url "registration" %}" class="btn btn-warning">Dashboard</a>
+      {% else %}
       <a href="{% url "login" %}" class="btn btn-success">Log in</a>
       <a href="{% url "registration" %}" class="btn btn-warning">Register</a>
+      {% endif %}
     </div>
   </div>
 </header>
