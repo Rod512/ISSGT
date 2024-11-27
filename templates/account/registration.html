@@ -15,6 +15,7 @@
                   <img src="{% static 'img/logo.png' %}" style="width: 80px;" alt="logo">
                   <h4 class="mt-1 mb-5 pb-1">শৈব ধর্ম জয়তে</h4>
                 </div>
+                {% include "partials/alerts.html" %}
   
                 <form method='POST'>
                   {% csrf_token %}

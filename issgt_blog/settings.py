@@ -137,3 +137,11 @@ AUTH_USER_MODEL = 'account.Account'
 
 TIME_ZONE = 'Asia/Kolkata'  # India Time Zone (IST)
 USE_TZ = True
+
+
+from django.contrib.messages import constants as messages
+
+MESSAGE_TAGS = {
+    messages.ERROR: "danger",
+    #50: "critical",
+}

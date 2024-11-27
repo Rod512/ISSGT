@@ -41,6 +41,7 @@
                       <div class="post-content d-flex flex-column">
 
                         <h3 class="post-title">{{ blog.category }}</h3>
+                        <p>{{blog.content|truncatechars:100}}</p>
 
                         <div class="meta d-flex align-items-center">
                           <div class="d-flex align-items-center">
@@ -124,7 +125,7 @@
                 <div class="post-item">
                   <img src="{{ recent_blog.image.url }}" alt="" class="flex-shrink-0">
                   <div>
-                    <h4><a href="#">{{ recent_blog.category }}</a></h4>
+                    <h4><a href="{% url 'single_blog' slug=recent_blog.slug %}">{{ recent_blog.category }}</a></h4>
                     <time datetime="{{ recent_blog.published_date }}">{{ recent_blog.published_date|date:"Y-m-d" }}</time>
                   </div>
                 </div>

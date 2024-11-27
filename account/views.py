@@ -25,7 +25,7 @@ def registration(request):
             
             # Success message
             messages.success(request, 'Your account has been created! You can now log in.')
-            return redirect('login')
+            return redirect('registration')
     else:
         form = RegistrationForm()
     
