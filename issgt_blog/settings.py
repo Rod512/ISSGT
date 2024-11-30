@@ -145,3 +145,10 @@ MESSAGE_TAGS = {
     messages.ERROR: "danger",
     #50: "critical",
 }
+
+#smtp configure
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'doze.org1724@gmail.com'
+EMAIL_HOST_PASSWORD = 'hisu besk nzdk dznr'
+EMAIL_USE_TLS = True
