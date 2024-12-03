@@ -9,6 +9,7 @@ from django.core.mail import EmailMessage
 from django.utils.http import urlsafe_base64_encode,urlsafe_base64_decode
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes
+from django.contrib.auth.decorators import login_required,user_passes_test
 
 
 
@@ -78,7 +79,10 @@ def user_login(request):
 
         if user is not None:
             login(request,user)
-            return redirect('home')
+            if user.is_staff:
+                return redirect('dashboard')
+            else:
+                return redirect('home')
         else:
             messages.error(request, 'Invalid email or password')
             return redirect('login')
@@ -87,3 +91,11 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     return redirect('home')
+
+def is_admin(user):
+    return user.is_staff
+
+@login_required
+@user_passes_test(is_admin, login_url='home')
+def dashboard(request):
+    return render(request, 'account/dashboard.html')

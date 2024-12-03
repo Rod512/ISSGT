@@ -122,3 +122,9 @@
   window.addEventListener("load", initSwiper);
 
 })();
+
+setTimeout(function(){
+  $('#message').fadeOut('slow')
+
+},4000)
+

@@ -78,58 +78,6 @@
     font-family: var(--heading-font);
   }
   
-  /* PHP Email Form Messages
-  ------------------------------*/
-  .php-email-form .error-message {
-    display: none;
-    background: #df1529;
-    color: #ffffff;
-    text-align: left;
-    padding: 15px;
-    margin-bottom: 24px;
-    font-weight: 600;
-  }
-  
-  .php-email-form .sent-message {
-    display: none;
-    color: #ffffff;
-    background: #059652;
-    text-align: center;
-    padding: 15px;
-    margin-bottom: 24px;
-    font-weight: 600;
-  }
-  
-  .php-email-form .loading {
-    display: none;
-    background: var(--surface-color);
-    text-align: center;
-    padding: 15px;
-    margin-bottom: 24px;
-  }
-  
-  .php-email-form .loading:before {
-    content: "";
-    display: inline-block;
-    border-radius: 50%;
-    width: 24px;
-    height: 24px;
-    margin: 0 10px -6px 0;
-    border: 3px solid var(--accent-color);
-    border-top-color: var(--surface-color);
-    animation: php-email-form-loading 1s linear infinite;
-  }
-  
-  @keyframes php-email-form-loading {
-    0% {
-      transform: rotate(0deg);
-    }
-  
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-  
   /*--------------------------------------------------------------
   # Global Header
   --------------------------------------------------------------*/
@@ -2035,10 +1983,174 @@
     .gradient-form {
     height: 100vh !important;
     }
+
     }
+
     @media (min-width: 769px) {
     .gradient-custom-2 {
     border-top-right-radius: .3rem;
     border-bottom-right-radius: .3rem;
     }
   }
+
+/* registration */
+
+.custom-gradient-right{
+  background: #fccb90;
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: -webkit-linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593);
+    
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593);;
+}
+
+.custom-gradient-btn{
+  background: -webkit-linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593);
+    
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593);;
+   border: none;
+
+}
+
+
+* Global Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.dashboard_sidebar {
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    background-color: #343a40;
+    color: white;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.dashboard_sidebar .user-profile {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.dashboard_sidebar img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.dashboard_sidebar a {
+    color: white;
+    text-decoration: none;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+}
+
+.dashboard_sidebar a:hover {
+    background-color: #495057;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.dashboard_sidebar .btn {
+    margin-top: 20px;
+}
+
+.dashboard_content {
+    margin-left: 270px;
+    padding: 20px;
+}
+
+/* Responsive for Small Screens */
+@media screen and (max-width: 768px) {
+    .dashboard_sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        padding: 10px;
+    }
+
+    .dashboard_content {
+        margin-left: 0;
+        padding: 10px;
+    }
+
+    .dashboard_sidebar a {
+        font-size: 1em;
+    }
+
+    .dashboard_sidebar .user-profile {
+        margin-bottom: 10px;
+    }
+
+    .dashboard_sidebar img {
+        width: 50px;
+        height: 50px;
+    }
+}
+
+/* Modal and Table Styles */
+.table {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.card {
+    margin-bottom: 20px;
+}
+
+.card-header {
+    font-size: 1.2em;
+}
+
+/* Form Section */
+.form-section h4 {
+    margin-bottom: 15px;
+}
+
+.form-section form {
+    max-width: 600px;
+    margin: auto;
+}
+
+/* Modal Styles */
+.modal-dialog {
+    max-width: 600px;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+@media screen and (max-width: 576px) {
+    .modal-dialog {
+        max-width: 100%;
+    }
+
+    .modal-body {
+        padding: 15px;
+    }
+}
+
+/* Button Styles */
+.btn {
+    font-size: 0.9em;
+}
+
+@media screen and (max-width: 576px) {
+    .btn {
+        font-size: 1em;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+

@@ -1,0 +1,219 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<!-- Sidebar -->
+<div class="dashboard_sidebar">
+    <div class="user-profile">
+        <img src="{% static 'img/koushik.jpg' %}" alt="User Profile">
+        <h5>John Doe</h5>
+        <a href="#" class="btn btn-danger btn-sm">Logout</a>
+    </div>
+    <a href="#blogSection">Manage Blogs</a>
+    <a href="#bookSection">Manage Books</a>
+    <a class="btn btn-success" href="{% url "home" %}">Go To Site</a>
+</div>
+
+<!-- Main Content -->
+<div class="dashboard_content">
+    <h1 class="mb-4">Dashboard</h1>
+
+    <!-- Blog Management Section -->
+    <div id="blogSection" class="card mb-4">
+        <div class="card-header bg-primary text-white">Manage Blogs</div>
+        <div class="card-body">
+            <!-- Blog List Table -->
+            <table class="table table-striped" id="blogTable">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Title</th>
+                        <th>Content</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Example Blog Post -->
+                    <tr>
+                        <td>1</td>
+                        <td>Sample Blog</td>
+                        <td>This is a sample blog content.</td>
+                        <td>
+                            <button class="btn btn-warning btn-sm" onclick="openEditBlogModal(1, 'Sample Blog', 'This is a sample blog content.')">Edit</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteBlog(1)">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Add New Blog Form -->
+            <div class="form-section">
+                <h4>Add New Blog</h4>
+                <form id="addBlogForm">
+                    <div class="mb-3">
+                        <label for="blogTitle" class="form-label">Blog Title</label>
+                        <input type="text" class="form-control" id="blogTitle" placeholder="Enter blog title" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="blogContent" class="form-label">Blog Content</label>
+                        <textarea class="form-control" id="blogContent" rows="4" placeholder="Enter blog content" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit Blog</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- PDF Management Section -->
+    <div id="bookSection" class="card mt-4">
+        <div class="card-header bg-primary text-white">Manage PDF Books</div>
+        <div class="card-body">
+            <!-- PDF Upload Form -->
+            <form id="pdfUploadForm" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="pdfFile" class="form-label">Upload PDF</label>
+                    <input type="file" class="form-control" id="pdfFile" accept=".pdf" required>
+                </div>
+                <button type="submit" class="btn btn-success">Upload PDF</button>
+            </form>
+
+            <!-- PDF List Table -->
+            <h4 class="mt-4">Uploaded PDFs</h4>
+            <table class="table table-striped mt-3" id="pdfTable">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>PDF Title</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Example PDF -->
+                    <tr>
+                        <td>1</td>
+                        <td><a href="sample.pdf" target="_blank">Sample PDF</a></td>
+                        <td>
+                            <a href="sample.pdf" class="btn btn-info btn-sm" download="sample.pdf">Download</a>
+                            <button class="btn btn-warning btn-sm" onclick="openEditPdfModal(1, 'Sample PDF')">Edit</button>
+                            <button class="btn btn-danger btn-sm" onclick="deletePdf(1)">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Blog Modal -->
+<div class="modal fade" id="editBlogModal" tabindex="-1" aria-labelledby="editBlogModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editBlogModalLabel">Edit Blog</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editBlogForm">
+                    <div class="mb-3">
+                        <label for="editBlogTitle" class="form-label">Blog Title</label>
+                        <input type="text" class="form-control" id="editBlogTitle" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editBlogContent" class="form-label">Blog Content</label>
+                        <textarea class="form-control" id="editBlogContent" rows="4" required></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="saveBlogChanges()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit PDF Modal -->
+<div class="modal fade" id="editPdfModal" tabindex="-1" aria-labelledby="editPdfModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editPdfModalLabel">Edit PDF</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editPdfForm">
+                    <div class="mb-3">
+                        <label for="editPdfTitle" class="form-label">PDF Title</label>
+                        <input type="text" class="form-control" id="editPdfTitle" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="savePdfChanges()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Open Edit Blog Modal
+    function openEditBlogModal(id, title, content) {
+        document.getElementById('editBlogTitle').value = title;
+        document.getElementById('editBlogContent').value = content;
+        document.getElementById('editBlogModal').setAttribute('data-id', id);
+        var myModal = new bootstrap.Modal(document.getElementById('editBlogModal'));
+        myModal.show();
+    }
+
+    // Save Changes After Editing Blog
+    function saveBlogChanges() {
+        const id = document.getElementById('editBlogModal').getAttribute('data-id');
+        const updatedTitle = document.getElementById('editBlogTitle').value;
+        const updatedContent = document.getElementById('editBlogContent').value;
+        const table = document.getElementById('blogTable');
+        const row = table.rows[id - 1];
+        row.cells[1].textContent = updatedTitle;
+        row.cells[2].textContent = updatedContent;
+        const myModal = bootstrap.Modal.getInstance(document.getElementById('editBlogModal'));
+        myModal.hide();
+    }
+
+    // Delete Blog
+    function deleteBlog(id) {
+        if (confirm('Are you sure you want to delete this blog?')) {
+            const table = document.getElementById('blogTable');
+            table.deleteRow(id - 1);
+        }
+    }
+
+    // Open Edit PDF Modal
+    function openEditPdfModal(id, title) {
+        document.getElementById('editPdfTitle').value = title;
+        document.getElementById('editPdfModal').setAttribute('data-id', id);
+        var myModal = new bootstrap.Modal(document.getElementById('editPdfModal'));
+        myModal.show();
+    }
+
+    // Save Changes After Editing PDF
+    function savePdfChanges() {
+        const id = document.getElementById('editPdfModal').getAttribute('data-id');
+        const updatedTitle = document.getElementById('editPdfTitle').value;
+        const table = document.getElementById('pdfTable');
+        const row = table.rows[id - 1];
+        row.cells[1].textContent = updatedTitle;
+        const myModal = bootstrap.Modal.getInstance(document.getElementById('editPdfModal'));
+        myModal.hide();
+    }
+
+    // Delete PDF
+    function deletePdf(id) {
+        if (confirm('Are you sure you want to delete this PDF?')) {
+            const table = document.getElementById('pdfTable');
+            table.deleteRow(id - 1);
+        }
+    }
+</script>
+
+{% endblock content %}
