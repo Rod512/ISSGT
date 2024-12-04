@@ -23,45 +23,49 @@
     <div id="blogSection" class="card mb-4">
         <div class="card-header bg-primary text-white">Manage Blogs</div>
         <div class="card-body">
+            <!-- Add New Blog Form -->
+            <div class="form-section">
+                <h4>Add New Category</h4>
+                <form method ='POST'>
+                    {% csrf_token %}
+                    {{categoryform.as_p}}
+                    <button type="submit" name="create_category" class="btn btn-danger">Submit Category</button>
+                </form>
+                
+                <h4>Add New Blog</h4>
+                <form id="addBlogForm" method='POST' enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{form.as_p}}
+                    <button type="submit" name="create_blog" class="btn btn-primary">Submit Blog</button>
+                </form>
+            </div>
+
             <!-- Blog List Table -->
             <table class="table table-striped" id="blogTable">
                 <thead>
                     <tr>
-                        <th>#</th>
-                        <th>Title</th>
+                        <th>Category</th>
                         <th>Content</th>
-                        <th>Actions</th>
+                        <th>Upload Date</th>
                     </tr>
                 </thead>
                 <tbody>
                     <!-- Example Blog Post -->
+                     {% for blog in blogs %}
                     <tr>
-                        <td>1</td>
-                        <td>Sample Blog</td>
-                        <td>This is a sample blog content.</td>
+                        <td>{{blog.category}}</td>
+                        <td>{{blog.content|truncatechars:50}}</td>
+                        <td>{{blog.published_date}}</td>
+                        
                         <td>
                             <button class="btn btn-warning btn-sm" onclick="openEditBlogModal(1, 'Sample Blog', 'This is a sample blog content.')">Edit</button>
+                            <a href="{% url 'single_blog' slug=blog.slug %}" class="btn btn-warning btn-sm">View</a>
                             <button class="btn btn-danger btn-sm" onclick="deleteBlog(1)">Delete</button>
                         </td>
                     </tr>
+                    {% endfor %}
                 </tbody>
             </table>
-
-            <!-- Add New Blog Form -->
-            <div class="form-section">
-                <h4>Add New Blog</h4>
-                <form id="addBlogForm">
-                    <div class="mb-3">
-                        <label for="blogTitle" class="form-label">Blog Title</label>
-                        <input type="text" class="form-control" id="blogTitle" placeholder="Enter blog title" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="blogContent" class="form-label">Blog Content</label>
-                        <textarea class="form-control" id="blogContent" rows="4" placeholder="Enter blog content" required></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Submit Blog</button>
-                </form>
-            </div>
         </div>
     </div>
 
@@ -70,12 +74,10 @@
         <div class="card-header bg-primary text-white">Manage PDF Books</div>
         <div class="card-body">
             <!-- PDF Upload Form -->
-            <form id="pdfUploadForm" enctype="multipart/form-data">
-                <div class="mb-3">
-                    <label for="pdfFile" class="form-label">Upload PDF</label>
-                    <input type="file" class="form-control" id="pdfFile" accept=".pdf" required>
-                </div>
-                <button type="submit" class="btn btn-success">Upload PDF</button>
+            <form id="pdfUploadForm" enctype="multipart/form-data" method="POST">
+                {% csrf_token %}
+                {{bookform.as_p}}
+                <button type="submit" name="upload_pdf" class="btn btn-success">Upload PDF</button>
             </form>
 
             <!-- PDF List Table -->
@@ -83,22 +85,32 @@
             <table class="table table-striped mt-3" id="pdfTable">
                 <thead>
                     <tr>
-                        <th>#</th>
-                        <th>PDF Title</th>
-                        <th>Actions</th>
+                        <th>Book name</th>
+                        {% comment %} <th>File</th> {% endcomment %}
+                        <th>Book Image</th>
                     </tr>
                 </thead>
                 <tbody>
                     <!-- Example PDF -->
+                    {% for book in books %}
                     <tr>
-                        <td>1</td>
-                        <td><a href="sample.pdf" target="_blank">Sample PDF</a></td>
+                        <td>{{book.book_name}}</td>
+                        {% comment %} <td>
+                        {% if book.pdf %}
+                            <embed src="{{ book.pdf.url }}" type="application/pdf" width="100" height="100">
+                        {% else %}
+                            No PDF uploaded
+                        {% endif %}
+                                                    
+                        </td> {% endcomment %}
+                        <td><img class="img-thumbnail" src="{{ book.book_image.url }}" alt="Book Image" width="100" height="100"></td>
                         <td>
-                            <a href="sample.pdf" class="btn btn-info btn-sm" download="sample.pdf">Download</a>
+                            <a href="{{book.pdf.url}}" class="btn btn-info btn-sm" Download>Download</a>
                             <button class="btn btn-warning btn-sm" onclick="openEditPdfModal(1, 'Sample PDF')">Edit</button>
                             <button class="btn btn-danger btn-sm" onclick="deletePdf(1)">Delete</button>
                         </td>
                     </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>

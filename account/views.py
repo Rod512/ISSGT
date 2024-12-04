@@ -11,6 +11,11 @@ from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes
 from django.contrib.auth.decorators import login_required,user_passes_test
 
+from home.models import HomeBlog,Category
+from home.forms import Homeblogform, CategoryForm
+from books.models import Books
+from books.forms import BookForm
+
 
 
 def registration(request):
@@ -98,4 +103,53 @@ def is_admin(user):
 @login_required
 @user_passes_test(is_admin, login_url='home')
 def dashboard(request):
-    return render(request, 'account/dashboard.html')
+    # blogs
+    blogs = HomeBlog.objects.filter(author=request.user)
+    
+    # category
+    categories = Category.objects.all()
+
+    #Books
+    books = Books.objects.all()
+    
+    # forms
+    form = Homeblogform()
+    categoryform = CategoryForm()
+    bookform = BookForm()
+
+    if request.method == 'POST':
+        # for blog
+        if 'create_blog' in request.POST:
+            form = Homeblogform(request.POST, request.FILES)
+            if form.is_valid():
+                blog = form.save(commit=False)
+                blog.author = request.user
+                blog.save()
+                messages.success(request, 'Blog created successfully')
+                return redirect('dashboard')
+
+        # for category
+        elif 'create_category' in request.POST:
+            categoryform = CategoryForm(request.POST)
+            if categoryform.is_valid():
+                categoryform.save()
+                messages.success(request, 'Category created successfully')
+                return redirect('dashboard')
+        
+        elif 'upload_pdf' in request.POST:
+            bookform = BookForm(request.POST, request.FILES)
+            if bookform.is_valid():
+                bookform.save()
+                messages.success(request, 'Book uploaded successfully')
+                return redirect('dashboard')
+        
+
+    context = {
+        'blogs': blogs,
+        'form': form,
+        'categoryform': categoryform,
+        'categories': categories,
+        'bookform': bookform,
+        'books': books
+    }
+    return render(request, 'account/dashboard.html', context)
