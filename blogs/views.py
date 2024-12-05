@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 def blog_list(request):
     # Fetch all blogs for the blog page
     blogs = HomeBlog.objects.all().order_by('-published_date')
-    paginator = Paginator(blogs, 5)  # Show 5 blogs per page
+    paginator = Paginator(blogs, 4)  # Show 5 blogs per page
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 

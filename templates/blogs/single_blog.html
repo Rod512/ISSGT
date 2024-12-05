@@ -35,8 +35,8 @@
               <h2 class="title">{{blog.category}}</h2>
 
               <div class="content">
-                <p>
-                  {{blog.content}}
+                <p style="white-space: pre-wrap;">
+                  {{blog.content|safe}}
                 </p>
               </div><!-- End post content -->
 
@@ -85,6 +85,7 @@
         <!-- Comment Form Section -->
         <section id="comment-form" class="comment-form section">
           <div class="container">
+            {% if user.is_authenticated %}
               <form method="post" action="{% url 'add_comment' blog.slug %}">
                   {% csrf_token %}
                   <h4>Post Comment</h4>
@@ -99,6 +100,9 @@
                       <button type="submit" class="btn btn-primary">Post Comment</button>
                   </div>
               </form>
+              {% else %}
+              <h2>Please login for write your comment</h2>
+              {% endif %}
           </div>
         </section><!-- /Comment Form Section --><!-- /Comment Form Section -->
 
@@ -124,10 +128,6 @@
                   </div>
                 </div>
               </div>
-
-              {% comment %} <p>
-                Itaque quidem optio quia voluptatibus dolorem dolor. Modi eum sed possimus accusantium. Quas repellat voluptatem officia numquam sint aspernatur voluptas. Esse et accusantium ut unde voluptas.
-              </p> {% endcomment %}
 
             </div>
 
