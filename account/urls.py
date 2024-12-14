@@ -7,4 +7,6 @@ urlpatterns = [
     path('login/', views.user_login, name='login'),
     path('logout/', views.user_logout, name='logout'),
     path('dashboard/', views.dashboard, name='dashboard'),
+    path('edit_post/<slug:slug>/', views.edit_post, name='edit_post'),
+     path('delete/<slug:slug>/', views.delete_post, name='delete_blog'),
 ]

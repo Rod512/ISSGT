@@ -16,6 +16,13 @@ from home.forms import Homeblogform, CategoryForm
 from books.models import Books
 from books.forms import BookForm
 
+from django.shortcuts import render, get_object_or_404
+from django.http import JsonResponse
+
+
+
+
+
 
 
 def registration(request):
@@ -153,3 +160,30 @@ def dashboard(request):
         'books': books
     }
     return render(request, 'account/dashboard.html', context)
+
+
+# Update blog data
+def edit_post(request, slug):
+    blog = get_object_or_404(HomeBlog, slug=slug)
+
+    if request.method == 'POST':
+        form = Homeblogform(request.POST, request.FILES, instance=blog)
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard')  
+    else:
+        form = Homeblogform(instance=blog)
+
+    return render(request, 'account/edit_post.html', {'form': form, 'blog': blog})
+
+
+@login_required
+def delete_post(request, slug):
+    blog = get_object_or_404(HomeBlog, slug=slug)
+
+    if request.method == 'POST':  
+        blog.delete()
+        messages.success(request, "The blog post has been deleted successfully.")
+        return redirect('dashboard')  
+
+    return render(request, 'account/delete_post.html', {'blog': blog})
