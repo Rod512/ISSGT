@@ -16,6 +16,7 @@ from home.forms import Homeblogform, CategoryForm
 from books.models import Books
 from books.forms import BookForm
 
+
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 
@@ -162,7 +163,7 @@ def dashboard(request):
     return render(request, 'account/dashboard.html', context)
 
 
-# Update blog data
+@login_required
 def edit_post(request, slug):
     blog = get_object_or_404(HomeBlog, slug=slug)
 
@@ -187,3 +188,28 @@ def delete_post(request, slug):
         return redirect('dashboard')  
 
     return render(request, 'account/delete_post.html', {'blog': blog})
+
+@login_required
+def edit_books(request, book_id):
+    books = get_object_or_404(Books, id=book_id)
+    if request.method == 'POST':
+        form = BookForm(request.POST, request.FILES, instance=books )
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Book updated successfully')
+            return redirect('dashboard')
+        else:
+            messages.error(request, 'Error updating book')
+    else:
+        form = BookForm(instance=books)
+    return render(request, 'account/edit_books.html', {'form': form, 'books': books })
+
+
+@login_required
+def delete_books(request, book_id):
+    books = get_object_or_404(Books, id=book_id)
+    if request.method == 'POST':
+        books.delete()
+        messages.success(request, "The book has been deleted successfully.")
+        return redirect('dashboard')
+    return render(request, 'account/delete_books.html', {'books': books})

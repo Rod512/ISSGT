@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 class MyAccountManager(BaseUserManager):
-    def create_user(self, first_name, last_name, username, email, password=None):
+    def create_user(self, first_name, last_name, username, email, password=None, profile_picture=None):
         if not email:
             raise ValueError("User must have email")
         if not username:
@@ -12,18 +12,21 @@ class MyAccountManager(BaseUserManager):
             username=username,
             first_name=first_name,
             last_name=last_name,
+            profile_picture=profile_picture
         )
         user.set_password(password)
         user.save(using = self.db)
         return user
     
-    def create_superuser(self, first_name, last_name, username, email, password):
+    def create_superuser(self, first_name, last_name, username, email, password, profile_picture=None):
         user = self.create_user(
             email= self.normalize_email(email),
             username=username,
             first_name=first_name,
             last_name=last_name,
-            password=password
+            password=password,
+            profile_picture=profile_picture,
+            
         )
         user.is_admin = True
         user.is_staff = True
@@ -46,6 +49,7 @@ class Account(AbstractBaseUser):
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
     is_superadmin = models.BooleanField(default= False)
+    profile_picture = models.ImageField(upload_to='profile_pictures/user', blank=True, null=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username','first_name','last_name',]

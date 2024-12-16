@@ -6,9 +6,9 @@
 <!-- Sidebar -->
 <div class="dashboard_sidebar">
     <div class="user-profile">
-        <img src="{% static 'img/koushik.jpg' %}" alt="User Profile">
-        <h5>John Doe</h5>
-        <a href="#" class="btn btn-danger btn-sm">Logout</a>
+        <img src="{{user.profile_picture.url}}" alt="User Profile">
+        <h5>{{user.full_name}}</h5>
+        <a href="{% url "logout" %}" class="btn btn-danger btn-sm">Logout</a>
     </div>
     <a href="#blogSection">Manage Blogs</a>
     <a href="#bookSection">Manage Books</a>
@@ -102,8 +102,8 @@
                         <td><img class="img-thumbnail" src="{{ book.book_image.url }}" alt="Book Image" width="100" height="100"></td>
                         <td>
                             <a href="{{book.pdf.url}}" class="btn btn-info btn-sm" Download>Download</a>
-                            <button class="btn btn-warning btn-sm" onclick="openEditPdfModal(1, 'Sample PDF')">Edit</button>
-                            <button class="btn btn-danger btn-sm" onclick="deletePdf(1)">Delete</button>
+                            <a href="{% url "edit_book" book.id %}" class="btn btn-warning btn-sm" >Edit</a>
+                            <a href="{% url 'delete_book' book.id %}" class="btn btn-danger btn-sm">Delete</a>
                         </td>
                     </tr>
                     {% endfor %}
@@ -113,60 +113,5 @@
     </div>
 </div>
 
-
-
-<!-- Edit PDF Modal -->
-<div class="modal fade" id="editPdfModal" tabindex="-1" aria-labelledby="editPdfModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editPdfModalLabel">Edit PDF</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="editPdfForm">
-                    <div class="mb-3">
-                        <label for="editPdfTitle" class="form-label">PDF Title</label>
-                        <input type="text" class="form-control" id="editPdfTitle" required>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="savePdfChanges()">Save Changes</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-
-    // Open Edit PDF Modal
-    function openEditPdfModal(id, title) {
-        document.getElementById('editPdfTitle').value = title;
-        document.getElementById('editPdfModal').setAttribute('data-id', id);
-        var myModal = new bootstrap.Modal(document.getElementById('editPdfModal'));
-        myModal.show();
-    }
-
-    // Save Changes After Editing PDF
-    function savePdfChanges() {
-        const id = document.getElementById('editPdfModal').getAttribute('data-id');
-        const updatedTitle = document.getElementById('editPdfTitle').value;
-        const table = document.getElementById('pdfTable');
-        const row = table.rows[id - 1];
-        row.cells[1].textContent = updatedTitle;
-        const myModal = bootstrap.Modal.getInstance(document.getElementById('editPdfModal'));
-        myModal.hide();
-    }
-
-    // Delete PDF
-    function deletePdf(id) {
-        if (confirm('Are you sure you want to delete this PDF?')) {
-            const table = document.getElementById('pdfTable');
-            table.deleteRow(id - 1);
-        }
-    }
-</script>
 
 {% endblock content %}
