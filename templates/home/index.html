@@ -89,17 +89,17 @@
                   {% for blog in blogs %}
                     <div class="col-lg-3">
                       <div class="post-entry">
-                        <a href="{{ blog.get_absolute_url }}">
+                        <a href="{{ blog.image.url }}">
                           <img src="{{ blog.image.url }}" alt="{{ blog.category }}" class="img-fluid rounded">
                         </a>
                         <div class="post-meta"><span>{{ blog.published_date|date:"Y-m-d" }}</span></div>
-                        <h2><a href="{{ blog.get_absolute_url }}">{{ blog.category }}</a></h2>
+                        <h2><a href="{% url 'single_blog' slug=blog.slug %}">{{ blog.blog_name }}</a></h2>
                         <p>{{ blog.content|truncatewords:20 }}</p>
                       </div>
                     </div>
                   {% endfor %}
                   {% else %}
-                    <h4>No blogs found matching your search criteria.<a style="text-decoration: underline" href="{% url "home" %}">Go Back</a></h4>
+                    <h4>No blogs found<a style="text-decoration: underline" href="{% url "home" %}">Go Back</a></h4>
                   {% endif %}
                 </div>
               </div>

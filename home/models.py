@@ -15,6 +15,7 @@ class Category(models.Model):
 class HomeBlog(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="blogs", verbose_name="Category")  # Blog category
     slug = models.SlugField(unique=True, verbose_name="Slug")  # URL-friendly slug for each blog
+    blog_name = models.CharField(max_length=100,  blank=True, null=True, unique=True)
     published_date = models.DateTimeField(auto_now_add=True, verbose_name="Published Date")  # When the blog is published
     image = models.ImageField(upload_to='photos/blogs', blank=True, null=True, verbose_name="Image")  # Blog image
     is_featured = models.BooleanField(default=False, verbose_name="Featured")  # Whether the blog is featured
