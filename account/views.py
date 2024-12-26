@@ -272,3 +272,31 @@ def resetPassword(request):
             return redirect('resetpassword')
     else:
         return render(request,'account/resetPassword.html')
+    
+
+from django.contrib.auth import logout
+
+@login_required(login_url='login')
+def change_password(request):
+    if request.method == 'POST':
+        current_password = request.POST['current_password']
+        new_password = request.POST['new_password']
+        confirm_password = request.POST['confirm_password']
+
+        user = Account.objects.get(username__exact=request.user.username)
+
+        if new_password == confirm_password:
+            success = user.check_password(current_password)
+            if success:
+                user.set_password(new_password)
+                user.save()
+                logout(request)
+                messages.success(request, 'Password updated successfully. Please login again.')
+                return redirect('login')
+            else:
+                messages.error(request, 'Current password is not correct')
+                return redirect('change_password')
+        else:
+            messages.error(request, 'Passwords do not match')
+            return redirect('change_password')
+    return render(request, 'account/change_password.html')
