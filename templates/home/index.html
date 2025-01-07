@@ -85,22 +85,27 @@
             <div class="row g-5">
               <div class="col-lg-12">
                 <div class="row">
-                  {% if blogs and search_keyword %}
-                    <h2>Search Results for "{{ search_keyword }}"</h2>
-                    <div class="row">
-                      {% for blog in blogs %}
-                        <div class="col-lg-3">
-                          <div class="post-entry">
-                            <a href="{{ blog.image.url }}">
-                              <img src="{{ blog.image.url }}" alt="{{ blog.category }}" class="img-fluid rounded">
-                            </a>
-                            <div class="post-meta"><span>{{ blog.published_date|date:"Y-m-d" }}</span></div>
-                            <h2><a href="{% url 'single_blog' slug=blog.slug %}">{{ blog.blog_name }}</a></h2>
-                            <p>{{ blog.content|truncatewords:20 }}</p>
+                  {% if search_keyword %}
+  <h2>Search Results for "{{ search_keyword }}"</h2>
+                    {% if blogs %}
+                      <div class="row">
+                        {% for blog in blogs %}
+                          <div class="col-lg-3">
+                            <div class="post-entry">
+                              <a href="{{ blog.image.url }}">
+                                <img src="{{ blog.image.url }}" alt="{{ blog.category }}" class="img-fluid rounded">
+                              </a>
+                              <div class="post-meta"><span>{{ blog.published_date|date:"Y-m-d" }}</span></div>
+                              <h2><a href="{% url 'single_blog' slug=blog.slug %}">{{ blog.blog_name }}</a></h2>
+                              <p>{{ blog.content|truncatewords:20 }}</p>
+                            </div>
                           </div>
-                        </div>
-                      {% endfor %}
-                    </div>
+                        {% endfor %}
+                      </div>
+                    {% else %}
+                      <h4>No blogs found for "{{ search_keyword }}".</h4>
+                      <a href="{% url "home" %}">Back to home</a>
+                    {% endif %}
                   {% elif blogs_by_category %}
                     {% for category, blogs in blogs_by_category.items %}
                       <h2>{{ category }}</h2>
@@ -120,14 +125,14 @@
                               </div>
                             </div>
                           {% endfor %}
-                          {% else %}
-                            <h4>No blogs found in {{ category }}.</h4>
-                          {% endif %}
+                        {% else %}
+                          <h4>No blogs found in {{ category }}.</h4>
+                        {% endif %}
                       </div>
                     {% endfor %}
-                    {% else %}
-                      <h4>No blogs available. <a style="text-decoration: underline" href="{% url 'home' %}">Go Back</a></h4>
-                    {% endif %}
+                  {% else %}
+                    <h4>No blogs available. <a style="text-decoration: underline" href="{% url 'home' %}">Go Back</a></h4>
+                  {% endif %}
                 </div>
               </div>
             </div>
