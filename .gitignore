@@ -17,3 +17,5 @@ staticfiles/
 # Ignore VS Code settings
 .vscode/
 .idea/
+
+.env
