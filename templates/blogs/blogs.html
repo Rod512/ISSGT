@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+{% include "partials/_navbar.html" %}
+
+<main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title position-relative">
+      <div class="container d-lg-flex justify-content-between align-items-center">
+        <h1 class="mb-2 mb-lg-0">Blog Categories</h1>
+        <nav class="breadcrumbs">
+          <ol>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li class="current">Blogs</li>
+          </ol>
+        </nav>
+      </div>
+    </div><!-- End Page Title -->
+
+    <div class="container">
+      <div class="row">
+
+        <div class="col-lg-8">
+
+          <!-- Blog Posts Section -->
+          <section id="blog-posts" class="blog-posts section">
+
+            <div class="row gy-4">
+              {% if page_obj %}
+                {% for blog in page_obj %}
+                  <div class="col-lg-6">
+                    <article class="position-relative h-100">
+
+                      <div class="post-img position-relative overflow-hidden">
+                        <img src="{{ blog.image.url }}" class="img-fluid mb-5" alt="{{ blog.category }}">
+                        <span class="post-date">{{ blog.published_date|date:"F d" }}</span>
+                      </div>
+
+                      <div class="post-content d-flex flex-column">
+
+                        <h3 class="post-title">{{ blog.blog_name }}</h3>
+                        <p>{{blog.content|truncatechars:100}}</p>
+
+                        <div class="meta d-flex align-items-center">
+                          <div class="d-flex align-items-center">
+                            <i class="bi bi-person"></i> <span class="ps-2">{{blog.author.username}}</span>
+                          </div>
+                          <span class="px-3 text-black-50">/</span>
+                          <div class="d-flex align-items-center">
+                            <i class="bi bi-folder2"></i> <span class="ps-2">{{ blog.slug }}</span>
+                          </div>
+                        </div>
+
+                        <p>{{ blog.description}}</p>
+
+                        <hr>
+
+                        <a href="{% url 'single_blog' slug=blog.slug %}" class="readmore stretched-link"><span>Read More</span><i class="bi bi-arrow-right"></i></a>
+
+                      </div>
+
+                    </article>
+                  </div><!-- End post list item -->
+                {% endfor %}
+              {% else %}
+                <p>No blogs available at the moment.</p>
+              {% endif %}
+            </div>
+
+          </section><!-- /Blog Posts Section -->
+
+          <!-- Blog Pagination Section -->
+          <section id="blog-pagination" class="blog-pagination section">
+
+            <div class="d-flex justify-content-center">
+              <ul class="pagination">
+                {% if page_obj.has_previous %}
+                  <li><a href="?page={{ page_obj.previous_page_number }}"><i class="bi bi-chevron-left"></i></a></li>
+                {% else %}
+                  <li class="disabled"><i class="bi bi-chevron-left"></i></li>
+                {% endif %}
+
+                {% for page_num in page_obj.paginator.page_range %}
+                  {% if page_obj.number == page_num %}
+                    <li class="active"><a href="?page={{ page_num }}">{{ page_num }}</a></li>
+                  {% else %}
+                    <li><a href="?page={{ page_num }}">{{ page_num }}</a></li>
+                  {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                  <li><a href="?page={{ page_obj.next_page_number }}"><i class="bi bi-chevron-right"></i></a></li>
+                {% else %}
+                  <li class="disabled"><i class="bi bi-chevron-right"></i></li>
+                {% endif %}
+              </ul>
+            </div>
+
+          </section><!-- /Blog Pagination Section -->
+
+        </div>
+
+        <div class="col-lg-4 sidebar">
+
+          <div class="widgets-container">
+
+            <!-- Search Widget -->
+            <div class="search-widget widget-item">
+
+              <h3 class="widget-title">Search</h3>
+              <form action="{% url 'blogs' %}" method="get">
+                <input type="text" name="query" placeholder="Search blogs...">
+                <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+              </form>
+
+            </div><!--/Search Widget -->
+
+            <!-- Recent Posts Widget -->
+            <div class="recent-posts-widget widget-item">
+
+              <h3 class="widget-title">Recent Posts</h3>
+              {% for recent_blog in page_obj.object_list|slice:":5" %}
+                <div class="post-item">
+                  <img src="{{ recent_blog.image.url }}" alt="" class="flex-shrink-0">
+                  <div>
+                    <h4><a href="{% url 'single_blog' slug=recent_blog.slug %}">{{ recent_blog.blog_name }}</a></h4>
+                    <time datetime="{{ recent_blog.published_date }}">{{ recent_blog.published_date|date:"Y-m-d" }}</time>
+                  </div>
+                </div>
+              {% endfor %}
+            </div><!--/Recent Posts Widget -->
+
+            <!-- Tags Widget -->
+            <div class="tags-widget widget-item">
+
+              <h3 class="widget-title">Tags</h3>
+              <ul>
+                {% for tag in tags %}
+                  <li><a href="#">{{ tag }}</a></li>
+                {% endfor %}
+              </ul>
+
+            </div><!--/Tags Widget -->
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+    <!-- Scroll Top -->
+<a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  </main>
+{% endblock content %}

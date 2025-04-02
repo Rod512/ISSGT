@@ -1,0 +1,35 @@
+{% load static %}
+<header id="header" class="header d-flex align-items-center sticky-top">
+  <div
+    class="container position-relative d-flex align-items-center justify-content-between"
+  >
+    <a href="{% url "home" %}" class="logo d-flex align-items-center me-auto me-xl-0">
+      <!-- Uncomment the line below if you also wish to use an image logo -->
+      <img src="{% static "img/logo.png" %}" alt="">
+    </a>
+
+    <nav id="navmenu" class="navmenu">
+      <ul>
+        <li><a href="{% url "home" %}" class="active">Home</a></li>
+        <li><a href="{% url "about" %}">About</a></li>
+        <li><a href="{% url "books" %}">Books</a></li>
+        <li><a href="{% url "blogs" %}">Blogs</a></li>
+        <li><a href="{% url "contact" %}">Contact</a></li>
+      </ul>
+      <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+    </nav>
+
+    <div class="auth">
+      {% if user.is_authenticated %}
+      <span class="d-block">Welcome {{user.first_name}}</span>
+      <a href="{% url "logout" %}" class="btn btn-success">Log Out</a>
+      {% if user.is_admin %}
+      <a href="{% url "dashboard" %}" class="btn btn-warning">Dashboard</a>
+      {% endif %}
+      {% else %}
+      <a href="{% url "login" %}" class="btn btn-success">Log in</a>
+      <a href="{% url "registration" %}" class="btn btn-warning">Register</a>
+      {% endif %}
+    </div>
+  </div>
+</header>

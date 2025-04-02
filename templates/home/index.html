@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+{% include "partials/_navbar.html" %}
+<main class="main">
+
+  <!-- Slider Section -->
+  <section id="slider" class="slider section dark-background">
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+      <div class="swiper init-swiper">
+        <script type="application/json" class="swiper-config">
+          {
+            "loop": true,
+            "speed": 600,
+            "autoplay": {
+              "delay": 5000
+            },
+            "slidesPerView": "auto",
+            "centeredSlides": true,
+            "pagination": {
+              "el": ".swiper-pagination",
+              "type": "bullets",
+              "clickable": true
+            },
+            "navigation": {
+              "nextEl": ".swiper-button-next",
+              "prevEl": ".swiper-button-prev"
+            }
+          }
+        </script>
+
+        <div class="swiper-wrapper">
+          <div class="swiper-slide" style="background-image: url('{% static 'img/mahadev1.jpg' %}');">
+            <div class="content">
+              <h2><a href="single-post.html">The Best Homemade Masks for Face (keep the Pimples Away)</a></h2>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem neque est mollitia! Beatae minima assumenda repellat harum vero, officiis ipsam magnam obcaecati cumque maxime inventore repudiandae quidem necessitatibus rem atque.</p>
+            </div>
+          </div>
+
+          <div class="swiper-slide" style="background-image: url('{% static 'img/mahadev2.jpg' %}');">
+            <div class="content">
+              <h2><a href="single-post.html">17 Pictures of Medium Length Hair in Layers That Will Inspire Your New Haircut</a></h2>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem neque est mollitia! Beatae minima assumenda repellat harum vero, officiis ipsam magnam obcaecati cumque maxime inventore repudiandae quidem necessitatibus rem atque.</p>
+            </div>
+          </div>
+
+          <div class="swiper-slide" style="background-image: url('{% static 'img/mahadev3.jpg' %}');">
+            <div class="content">
+              <h2><a href="single-post.html">13 Amazing Poems from Shel Silverstein with Valuable Life Lessons</a></h2>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem neque est mollitia! Beatae minima assumenda repellat harum vero, officiis ipsam magnam obcaecati cumque maxime inventore repudiandae quidem necessitatibus rem atque.</p>
+            </div>
+          </div>
+
+          <div class="swiper-slide" style="background-image: url('{% static 'img/mahadev4.jpg' %}');">
+            <div class="content">
+              <h2><a href="single-post.html">9 Half-up/half-down Hairstyles for Long and Medium Hair</a></h2>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem neque est mollitia! Beatae minima assumenda repellat harum vero, officiis ipsam magnam obcaecati cumque maxime inventore repudiandae quidem necessitatibus rem atque.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-pagination"></div>
+      </div>
+    </div>
+  </section><!-- /Slider Section -->
+
+  <!-- Trending Category Section -->
+  <section id="trending-category" class="trending-category section">
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+      <!-- Search bar -->
+      <div class="search-widget widget-item">
+        <h3 class="widget-title">Search</h3>
+        <form action="{% url 'search' %}" method="get">
+          <input type="text" name="keyword" value="{{ request.GET.keyword }}" placeholder="Search Blogs..." required>
+          <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+        </form>
+      </div>
+      
+      <div class="container" data-aos="fade-up">
+        <div class="row g-5">
+          <div class="col-lg-12">
+            <div class="row g-5">
+              <div class="col-lg-12">
+                <div class="row">
+                  {% if search_keyword %}
+  <h2>Search Results for "{{ search_keyword }}"</h2>
+                    {% if blogs %}
+                      <div class="row">
+                        {% for blog in blogs %}
+                          <div class="col-lg-3">
+                            <div class="post-entry">
+                              <a href="{{ blog.image.url }}">
+                                <img src="{{ blog.image.url }}" alt="{{ blog.category }}" class="img-fluid rounded">
+                              </a>
+                              <div class="post-meta"><span>{{ blog.published_date|date:"Y-m-d" }}</span></div>
+                              <h2><a href="{% url 'single_blog' slug=blog.slug %}">{{ blog.blog_name }}</a></h2>
+                              <p>{{ blog.content|truncatewords:20 }}</p>
+                            </div>
+                          </div>
+                        {% endfor %}
+                      </div>
+                    {% else %}
+                      <h4>No blogs found for "{{ search_keyword }}".</h4>
+                      <a href="{% url "home" %}">Back to home</a>
+                    {% endif %}
+                  {% elif blogs_by_category %}
+                    {% for category, blogs in blogs_by_category.items %}
+                      <h2>{{ category }}</h2>
+                      <div class="row">
+                        {% if blogs %}
+                          {% for blog in blogs %}
+                            <div class="col-lg-3">
+                              <div class="post-entry">
+                                <a href="{{ blog.image.url }}">
+                                  <img src="{{ blog.image.url }}" alt="{{ blog.category }}" class="img-fluid rounded">
+                                </a>
+                                <div class="post-meta">
+                                  <span>{{ blog.published_date|date:"Y-m-d" }}</span>
+                                </div>
+                                <h2><a href="{% url 'single_blog' slug=blog.slug %}">{{ blog.blog_name }}</a></h2>
+                                <p>{{ blog.content|truncatewords:20 }}</p>
+                              </div>
+                            </div>
+                          {% endfor %}
+                        {% else %}
+                          <h4>No blogs found in {{ category }}.</h4>
+                        {% endif %}
+                      </div>
+                    {% endfor %}
+                  {% else %}
+                    <h4>No blogs available. <a style="text-decoration: underline" href="{% url 'home' %}">Go Back</a></h4>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div> <!-- End .row -->
+      </div> <!-- End .container -->
+    </div>
+  </section><!-- /Trending Category Section -->
+
+</main>
+
+<!-- Scroll Top -->
+<a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+<!-- Preloader -->
+<div id="preloader"></div>
+
+{% endblock content %}

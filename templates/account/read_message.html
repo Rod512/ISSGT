@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+{% include "partials/_navbar.html" %}
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h2 class="mb-0">Message from {{ message.name }}</h2>
+        </div>
+        <div class="card-body">
+            <p><strong>Email:</strong> {{ message.email }}</p>
+            <p><strong>Received At:</strong> {{ message.created_at }}</p>
+            <hr>
+            <p class="lead">{{ message.message }}</p>
+        </div>
+        <div class="card-footer text-end">
+            <a href="{% url 'contact_messages' %}" class="btn btn-secondary">Back to Messages</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

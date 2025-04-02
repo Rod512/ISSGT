@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+{% include "partials/_navbar.html" %}
+<main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title position-relative">
+      <div class="container d-lg-flex justify-content-between align-items-center">
+        <h1 class="mb-2 mb-lg-0">Category</h1>
+        <nav class="breadcrumbs">
+          <ol>
+            <li><a href="index.html">Home</a></li>
+            <li class="current">Categories</li>
+          </ol>
+        </nav>
+      </div>
+    </div><!-- End Page Title -->
+
+    <div class="container">
+      <!-- Search Widget -->
+      <div class="widgets-container">
+            <div class="search-widget widget-item">
+
+              <h3 class="widget-title">Search</h3>
+              <form action="{% url 'books' %}" method="get">
+                <input type="text" name="keyword" placeholder="Search books..." value="{{ keyword }}" class="form-control">
+                <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+              </form>
+            
+            </div>
+      </div>
+      <!--/Search Widget -->
+      <div class="row">
+
+        <div class="col-lg-12">
+
+          <!-- Blog Posts Section -->
+          <section id="blog-posts" class="blog-posts section">
+
+            <div class="container">
+              <div class="row gy-4">
+                {% if book_page_obj%}
+                {% for book in book_page_obj %}
+                <div class="col-lg-3">
+                    <article class="position-relative h-100">
+                        <div class="post-img position-relative overflow-hidden">
+                            <img src="{{ book.book_image.url }}" class="img-fluid" alt="">
+                            <span class="post-date">{{ book.uploaded_at }}</span>
+                        </div>
+                        <div class="post-content d-flex flex-column">
+                            <h3 class="post-title">{{ book.book_name }}</h3>
+                            <div class="meta d-flex align-items-center">
+                                <div class="d-flex align-items-center">
+                                    <i class="bi bi-person"></i> <span class="ps-2">{{ book.book_author }}</span>
+                                </div>
+                            </div>
+                            <hr>
+                            <a href="{{ book.pdf.url }}" class="readmore stretched-link" Download>
+                                <span>Download</span><i class="bi bi-arrow-down"></i>
+                            </a>
+                        </div>
+                    </article>
+                </div>
+                {% endfor %}
+                {% else %}
+                <h4>There is no books in your search keyword. <a style="text-decoration: underline" href="{% url "books" %}">Go Back</a></h4>
+                {% endif %}
+              </div>
+            </div>
+
+          </section><!-- /Blog Posts Section -->
+
+          <!-- Blog Pagination Section -->
+          <section id="blog-pagination" class="blog-pagination section">
+
+            <div class="d-flex justify-content-center">
+              <ul class="pagination">
+                {% if book_page_obj.has_previous %}
+                  <li><a href="?page={{ book_page_obj.previous_page_number }}"><i class="bi bi-chevron-left"></i></a></li>
+                {% else %}
+                  <li class="disabled"><i class="bi bi-chevron-left"></i></li>
+                {% endif %}
+
+                {% for page_num in book_page_obj.paginator.page_range %}
+                  {% if book_page_obj.number == page_num %}
+                    <li class="active"><a href="?page={{ page_num }}">{{ page_num }}</a></li>
+                  {% else %}
+                    <li><a href="?page={{ page_num }}">{{ page_num }}</a></li>
+                  {% endif %}
+                {% endfor %}
+
+                {% if book_page_obj.has_next %}
+                  <li><a href="?page={{ book_page_obj.next_page_number }}"><i class="bi bi-chevron-right"></i></a></li>
+                {% else %}
+                  <li class="disabled"><i class="bi bi-chevron-right"></i></li>
+                {% endif %}
+              </ul>
+            </div>
+
+          </section><!-- /Blog Pagination Section -->
+
+        </div>
+      </div>
+    </div>
+  </main>
+{% include "partials/_footer.html" %}
+{% endblock content %}

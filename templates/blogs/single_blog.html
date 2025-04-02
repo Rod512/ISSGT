@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% include "partials/_navbar.html" %}
+<main class="main">
+
+  <!-- Page Title -->
+  <div class="page-title">
+    <div class="container d-lg-flex justify-content-between align-items-center">
+      <h1 class="mb-2 mb-lg-0">Single Post</h1>
+      <nav class="breadcrumbs">
+        <ol>
+          <li><a href="{% url "home" %}">Home</a></li>
+          <li class="current">Single Post</li>
+        </ol>
+      </nav>
+    </div>
+  </div><!-- End Page Title -->
+
+  <div class="container">
+    <div class="row">
+
+      <div class="col-lg-8">
+
+        <!-- Blog Details Section -->
+        <section id="blog-details" class="blog-details section">
+          <div class="container">
+
+            <article class="article">
+
+              <div class="post-img">
+                <img src="{{blog.image.url}}" alt="" class="img-fluid">
+              </div>
+
+              <h2 class="title">{{blog.blog_name}}</h2>
+
+              <div class="content">
+                <p style="white-space: pre-wrap;">
+                  {{blog.content|safe}}
+                </p>
+              </div><!-- End post content -->
+
+              <div class="meta-bottom">
+                <i class="bi bi-folder"></i>
+                <ul class="cats">
+                  <li><a href="#">{{blog.slug}}</a></li>
+                </ul>
+
+                <i class="bi bi-clock"></i>
+                <ul class="tags">
+                  <li>{{ blog.published_date|date:"F d, Y" }}</li>
+                </ul>
+              </div><!-- End meta bottom -->
+
+            </article>
+
+          </div>
+        </section><!-- /Blog Details Section -->
+
+        <!-- Blog Comments Section -->
+        <!-- Blog Comments Section -->
+        <section id="blog-comments" class="blog-comments section">
+          <div class="container">
+              <h4 class="comments-count">{{ comment.count }} Comments</h4>
+
+              {% for com in comment %}
+                  <div id="comment-{{ com.slug }}" class="comment">
+                      <div class="d-flex">
+                          <div class="comment-img">
+                              <img src="assets/img/blog/comments-1.jpg" alt="">
+                          </div>
+                          <div>
+                              <h5><a href="">{{ com.user.first_name }} {{ com.user.last_name }}</a>
+                              <time datetime="{{ com.created_at|date:'Y-m-d' }}">{{ com.created_at|date:'d M, Y' }}</time>
+                              <p>{{ com.comment }}</p>
+                          </div>
+                      </div>
+                  </div><!-- End comment -->
+              {% empty %}
+                  <p>No comments yet. Be the first to comment!</p>
+              {% endfor %}
+          </div>
+        </section><!-- /Blog Comments Section -->
+
+        <!-- Comment Form Section -->
+        <section id="comment-form" class="comment-form section">
+          <div class="container">
+            {% if user.is_authenticated %}
+              <form method="post" action="{% url 'add_comment' blog.slug %}">
+                  {% csrf_token %}
+                  <h4>Post Comment</h4>
+                  <p>Your email address will not be published. Required fields are marked *</p>
+                  <div class="row">
+                      <div class="col-md-12 form-group">
+                          <textarea name="content" class="form-control" placeholder="Your Comment*" required></textarea>
+                      </div>
+                  </div>
+
+                  <div class="text-center">
+                      <button type="submit" class="btn btn-primary">Post Comment</button>
+                  </div>
+              </form>
+              {% else %}
+              <h2>Please login for write your comment</h2>
+              {% endif %}
+          </div>
+        </section><!-- /Comment Form Section --><!-- /Comment Form Section -->
+
+      </div>
+
+      <div class="col-lg-4 sidebar">
+
+        <div class="widgets-container">
+
+          <!-- Blog Author Widget -->
+          <div class="blog-author-widget widget-item">
+
+            <div class="d-flex flex-column align-items-center">
+              <div class="d-flex align-items-center w-100">
+                <img src="assets/img/blog/blog-author.jpg" class="rounded-circle flex-shrink-0" alt="">
+                <div>
+                  <h4>Writter: {{blog.author.full_name}}</h4>
+                  <div class="social-links">
+                    <a href="https://x.com/#"><i class="bi bi-twitter-x"></i></a>
+                    <a href="https://facebook.com/#"><i class="bi bi-facebook"></i></a>
+                    <a href="https://instagram.com/#"><i class="biu bi-instagram"></i></a>
+                    <a href="https://instagram.com/#"><i class="biu bi-linkedin"></i></a>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div><!--/Blog Author Widget -->
+
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+<!-- Scroll Top -->
+<a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+</main>
+{% include "partials/_footer.html" %}
+{% endblock content %}

@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+
+<section class="h-100 custom-gradient-form" style="background-color: #eee;">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-xl-10">
+        <div class="card custom-card text-black">
+          <div class="row g-0">
+            <!-- Left Section -->
+            <div class="col-lg-6">
+              <div class="custom-card-body p-md-5 mx-md-4">
+                <div class="text-center">
+                  <img src="{% static 'img/logo.png' %}" style="width: 80px;" alt="logo">
+                  <h4 class="mt-1 mb-5 pb-1">শৈব ধর্ম জয়তে</h4>
+                </div>
+                {% include "partials/alerts.html" %}
+  
+                <form method='POST'>
+                  {% csrf_token %}
+                  <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">First_Name</label>
+                    {{form.first_name}}
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Last_Name</label>
+                    {{form.last_name}}
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Email</label>
+                    {{form.email}}
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Phone Number</label>
+                    {{form.phone_number}}
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Password</label>
+                    {{form.password}}
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Confirm_password</label>
+                    {{form.confirm_password}}
+                  </div>
+                  
+                  <button type="submit" class="btn btn-primary w-100 gradient-custom-2 mb-3">Submit</button> 
+                  <p>Already have an account? <a href="{% url "login" %}">login</a> or <a href="{% url "home" %}">Home</a> </p>
+                </form>
+              </div>
+            </div>
+  
+            <!-- Right Section -->
+            <div class="col-lg-6 d-flex align-items-center custom-gradient-right">
+              <div class="text-white px-3 py-4 p-md-5 mx-md-4">
+                <h4 class="mb-4">Join us now and grow your skills</h4>
+                <p class="small mb-0">Become a part of our growing community. Access exclusive content, get support, 
+                  and connect with like-minded individuals.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

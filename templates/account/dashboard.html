@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<!-- Sidebar -->
+<div class="dashboard_sidebar">
+    <div class="user-profile">
+        <img src="{{user.profile_picture.url}}" alt="User Profile">
+        <h5>{{user.full_name}}</h5>
+        <a href="{% url "logout" %}" class="btn btn-danger btn-sm">Logout</a>
+    </div>
+    <a href="#blogSection">Manage Blogs</a>
+    <a href="#bookSection">Manage Books</a>
+    <a href="{% url "change_password" %}">Change Passowrd</a>
+    <a href="{% url "contact_messages" %}">Manage Message</a>
+    <a class="btn btn-success" href="{% url "home" %}">Go To Site</a>
+</div>
+
+<!-- Main Content -->
+<div class="dashboard_content">
+    <h1 class="mb-4">Dashboard</h1>
+    {% include "partials/alerts.html" %}
+
+    <!-- Blog Management Section -->
+    <div id="blogSection" class="card mb-4">
+        <div class="card-header bg-primary text-white">Manage Blogs</div>
+        <div class="card-body">
+            <!-- Add New Blog Form -->
+            <div class="form-section">
+                <h4>Add New Category</h4>
+                <form method ='POST'>
+                    {% csrf_token %}
+                    {{categoryform.as_p}}
+                    <button type="submit" name="create_category" class="btn btn-danger">Submit Category</button>
+                </form>
+                
+                <h4>Add New Blog</h4>
+                <form id="addBlogForm" method='POST' enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{form.as_p}}
+                    <button type="submit" name="create_blog" class="btn btn-primary">Submit Blog</button>
+                </form>
+            </div>
+
+            <!-- Blog List Table -->
+            <table class="table table-striped" id="blogTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Category</th>
+                        <th>Content</th>
+                        <th>Upload Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Example Blog Post -->
+                     {% for blog in blogs %}
+                    <tr>
+                        <td>{{blog.id}}</td>
+                        <td>{{blog.category}}</td>
+                        <td>{{blog.content|truncatechars:50}}</td>
+                        <td>{{blog.published_date}}</td>
+                        
+                        <td>
+                            <a href="{% url "edit_post" blog.slug %}" class="btn btn-warning btn-sm" >Edit</a>
+                            <a href="{% url 'single_blog' slug=blog.slug %}" class="btn btn-warning btn-sm">View</a>
+                            <a href="{% url 'delete_blog' blog.slug %}" class="btn btn-danger btn-sm">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- PDF Management Section -->
+    <div id="bookSection" class="card mt-4">
+        <div class="card-header bg-primary text-white">Manage PDF Books</div>
+        <div class="card-body">
+            <!-- PDF Upload Form -->
+            <form id="pdfUploadForm" enctype="multipart/form-data" method="POST">
+                {% csrf_token %}
+                {{bookform.as_p}}
+                <button type="submit" name="upload_pdf" class="btn btn-success">Upload PDF</button>
+            </form>
+
+            <!-- PDF List Table -->
+            <h4 class="mt-4">Uploaded PDFs</h4>
+            <table class="table table-striped mt-3" id="pdfTable">
+                <thead>
+                    <tr>
+                        <th>Book name</th>
+                        <th>File</th>
+                        <th>Book Image</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Example PDF -->
+                    {% for book in books %}
+                    <tr>
+                        <td>{{book.book_name}}</td>
+                        <td><a href="{{book.pdf.url}}">{{book.pdf.url}}</a></td>
+                        <td><img class="img-thumbnail" src="{{ book.book_image.url }}" alt="Book Image" width="100" height="100"></td>
+                        <td>
+                            <a href="{{book.pdf.url}}" class="btn btn-info btn-sm" Download>Download</a>
+                            <a href="{% url "edit_book" book.id %}" class="btn btn-warning btn-sm" >Edit</a>
+                            <a href="{% url 'delete_book' book.id %}" class="btn btn-danger btn-sm">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}
